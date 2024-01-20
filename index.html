@@ -64,13 +64,13 @@
 	}
 	
 	function handleMotion(event) {
-		gx = event.rotationRate.beta
+		gx = event.rotationRate.beta?.toFixed(1)
 		updateMinMax("xmin", "xmax", gx, xmin, xmax);
 		
-		gy = event.rotationRate.gamma
+		gy = event.rotationRate.gamma?.toFixed(1)
 		updateMinMax("ymin", "ymax", gy, ymin, ymax);
 		
-		gz = event.rotationRate.alpha
+		gz = event.rotationRate.alpha?.toFixed(1)
 		updateMinMax("zmin", "zmax", gz, zmin, zmax);
 		
 		updateFieldIfNotNull('Gyroscope_z', event.rotationRate.alpha);	
