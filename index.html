@@ -45,20 +45,23 @@
 	
 	function handleMotion(event) {
 		gx = event.rotationRate.beta;
-		updateMinMax("xmin", "xmax", gx, xmin, xmax);
+		//updateMinMax("xmin", "xmax", gx, xmin, xmax);
 		
 		gy = event.rotationRate.gamma;
-		updateMinMax("ymin", "ymax", gy, ymin, ymax);
+		//updateMinMax("ymin", "ymax", gy, ymin, ymax);
 		
 		gz = event.rotationRate.alpha;
 		//updateMinMax("zmin", "zmax", gz, zmin, zmax);
-		if (gz > zmax)
+		if (gz > zmax){
 			zmax = gz;
-		if (gz < zmin)
+		}
+		if (gz < zmin){
 			zmin = gz;
+		}
 		if(gz == 0){
-			if((zmax-zmin) > threshold)
+			if((zmax-zmin) > threshold){
 				count = count + 1;
+			}
 			zmax = 0;
 			zmin = 0;
 
