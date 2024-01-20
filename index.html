@@ -9,36 +9,18 @@
 
 <body> 
 	
-	<h4>Gyroscope</h4>
-	<table cellspacing=0 border=1>
-		<tr>
-			<td></td>
-			<td><h4>Max</h4></td>
-			<td><h4>Min</h4></td>
-		</tr>
-		<tr>
-			<td>X</td>
-			<td><h1 id="xmax">0</h1></td>
-			<td><h1 id="xmin">0</h1></td>
-		</tr>
-		<tr>
-			<td>Y</td>
-			<td><h1 id="ymax">0</h1></td>
-			<td><h1 id="ymin">0</h1></td>
-		</tr>
-		<tr>
-			<td>Z</td>
-			<td><h1 id="zmax">0</h1></td>
-			<td><h1 id="zmin">0</h1></td>
-		</tr>
-	</table>
+	<h4>Pedal Count</h4>
+	<h1 id="count">0</h1>
+	
 	<script>
-	xmax = 0
-	xmin = 0
-	ymax = 0
-	ymin = 0
-	zmax = 0
-	zmin = 0
+	threshold = 40;
+	count = 0;
+	xmax = 0;
+	xmin = 0;
+	ymax = 0;
+	ymin = 0;
+	zmax = 0;
+	zmin = 0;
 	
 	function updateFieldIfNotNull(fieldName, value, precision=2){
 	  if (value != null)
@@ -69,11 +51,22 @@
 		updateMinMax("ymin", "ymax", gy, ymin, ymax);
 		
 		gz = event.rotationRate.alpha;
-		updateMinMax("zmin", "zmax", gz, zmin, zmax);
+		//updateMinMax("zmin", "zmax", gz, zmin, zmax);
+		if (gz > zmax)
+			zmax = gz;
+		if (gz < zmin)
+			zmin = gz;
+		if(gz == 0){
+			if((zmax-zmin) > threshold)
+				count = count + 1;
+			zmax = 0;
+			zmin = 0;
 
-		if(gx != null && gy != null && gz != null)
-			console.log("x:" + Math.round(gx).toString() +":y:" + Math.round(gy).toString() + "z:" + Math.round(gz).toString());
-			
+			document.getElementById("count").innerHTML = count;
+		}
+		if(gx != null && gy != null && gz != null){	
+			console.log("x:" + Math.round(gx).toString() +":y:" + Math.round(gy).toString() + ":z:" + Math.round(gz).toString() + ":c:" + count.toString());
+		}
 	}
 	window.addEventListener("devicemotion", handleMotion);
 	</script> 
