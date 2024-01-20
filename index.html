@@ -21,12 +21,13 @@
 	  if (value != null)
 		document.getElementById(fieldName).innerHTML = value.toFixed(precision);
 	}
-	window.removeEventListener("devicemotion", handleMotion);
 	function handleMotion(event) {
 		updateFieldIfNotNull('Gyroscope_z', event.rotationRate.alpha);	
 		updateFieldIfNotNull('Gyroscope_x', event.rotationRate.beta);
 		updateFieldIfNotNull('Gyroscope_y', event.rotationRate.gamma);
 	}
+	window.addEventListener("devicemotion", handleMotion);
+	
 	</script> 
 </body> 
 	
