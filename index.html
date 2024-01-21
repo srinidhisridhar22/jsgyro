@@ -13,7 +13,8 @@
 	<h1 id="count">0</h1>
 	
 	<script>
-	threshold = 40;
+	prev = 0;
+	threshold = 20;
 	count = 0;
 	xmax = 0;
 	xmin = 0;
@@ -21,55 +22,30 @@
 	ymin = 0;
 	zmax = 0;
 	zmin = 0;
-	
-	function updateFieldIfNotNull(fieldName, value, precision=2){
-	  if (value != null)
-		document.getElementById(fieldName).innerHTML = value.toFixed(precision);
-	}
-	
-	function updateMinMax(min_name, max_name, value, min_val, max_val){
-		if (value == null)
-			return;
-		value = Math.round(value);
-		if (value > max_val){
-			max_val = value;
-			min_val = 0
-		}
-		if (value < min_val){
-			min_val = value;
-			max_val = 0
-		}
-		document.getElementById(max_name).innerHTML = max_val.toFixed(2);
-		document.getElementById(min_name).innerHTML = min_val.toFixed(2);
-	}
-	
+
 	function handleMotion(event) {
 		gx = event.rotationRate.beta;
-		//updateMinMax("xmin", "xmax", gx, xmin, xmax);
-		
 		gy = event.rotationRate.gamma;
-		//updateMinMax("ymin", "ymax", gy, ymin, ymax);
-		
 		gz = event.rotationRate.alpha;
-		//updateMinMax("zmin", "zmax", gz, zmin, zmax);
 		if (gz > zmax){
 			zmax = gz;
 		}
 		if (gz < zmin){
 			zmin = gz;
 		}
-		if(gz == 0){
-			if((zmax-zmin) > threshold){
+		if(zmax > threshold && zmin < threshold*-1){
+			if(prev < 0 && gz >= 0){
 				count = count + 1;
+				zmax = 0;
+				zmin = 0;
+				document.getElementById("count").innerHTML = count;
 			}
-			zmax = 0;
-			zmin = 0;
-
-			document.getElementById("count").innerHTML = count;
 		}
 		if(gx != null && gy != null && gz != null){	
-			console.log("x:" + Math.round(gx).toString() +":y:" + Math.round(gy).toString() + ":z:" + Math.round(gz).toString() + ":c:" + count.toString());
+			console.log(`gz ${gz} min ${min} max ${max} prev ${prev} count ${count}`);
+			prev = gz;
 		}
+		
 	}
 	window.addEventListener("devicemotion", handleMotion);
 	</script> 
